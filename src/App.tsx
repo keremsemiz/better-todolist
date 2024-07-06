@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import { UilSearch, UilStar, UilHeart, UilUser } from '@iconscout/react-unicons';
 
 interface Todo {
   id: number;
@@ -10,6 +11,8 @@ interface Todo {
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
+  const [user, setUser] = useState<string>('');
+  const [importance, setImportance] = useState<string>('');
 
   const addTodo = () => {
     if (newTodo.trim() !== '') {
@@ -33,16 +36,59 @@ const App: React.FC = () => {
     setNewTodo(event.target.value);
   };
 
+  const handleUserChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    setUser(event.target.value);
+  };
+
+  const handleImportanceChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    setImportance(event.target.value);
+  };
+
   return (
     <div className="App">
-      <h1>To-Do List</h1>
-      <input
-        type="text"
-        value={newTodo}
-        onChange={handleInputChange}
-        placeholder="Enter new task"
-      />
-      <button onClick={addTodo}>Add Task</button>
+      <header>
+        <h1 className="userGreeting">Hey, {user}! </h1>
+        <input
+          className="taskName"
+          type="text"
+          value={user}
+          onChange={handleUserChange}
+          placeholder="Enter your name"
+        />
+      </header>
+      <div className="mainContent">
+      <section className="leftMenu">
+          <div className="menuIcon">
+            <UilSearch />
+          </div>
+          <div className="menuIcon">
+            <UilStar />
+          </div>
+          <div className="menuIcon">
+            <UilHeart />
+          </div>
+          <div className="menuIcon">
+            <UilUser />
+          </div>
+        </section>
+        <div className="inputHolders">
+          <input
+            className="taskName"
+            type="text"
+            value={newTodo}
+            onChange={handleInputChange}
+            placeholder="Enter new task"
+          />
+          <input
+            className="importance"
+            type="text"
+            value={importance}
+            onChange={handleImportanceChange}
+            placeholder="Enter importance"
+          />
+          <button onClick={addTodo}>Add Task</button>
+        </div>
+      </div>
       <ul>
         {todos.map(todo => (
           <li
@@ -50,7 +96,7 @@ const App: React.FC = () => {
             style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
             onClick={() => toggleTodo(todo.id)}
           >
-            {todo.text}
+            {todo.text} {importance}
           </li>
         ))}
       </ul>
