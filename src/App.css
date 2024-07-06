@@ -24,6 +24,7 @@ header {
   height: auto;
   border-bottom: 1px solid #30363D;
   display: flex;
+  align-items: center;
 }
 
 header input {
@@ -62,7 +63,7 @@ header input {
 }
 
 .leftMenu.expanded {
-  width: 20rem; /* Adjust width as needed */
+  width: 20rem;
 }
 
 .menuIcon, .menuIconHeader, svg {
@@ -73,7 +74,7 @@ header input {
 }
 
 svg {
-  margin-left: 1rem;
+  margin: auto;
 }
 
 .menuIcon {
@@ -87,6 +88,11 @@ svg {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: 1s all;
+}
+
+.menuIcon:hover {
+  border: 2px solid skyblue;
 }
 
 .menuIconHeader {
@@ -133,26 +139,38 @@ svg {
   margin: auto 0;
 }
 
-button {
+.addTask {
   height: 3.5rem;
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  background-color: #161B22;
+  border-radius: 16px;
+  border: 1px solid #30363D;
+  color: white;
 }
 
 ul {
-  text-align: center;
-  list-style-type: none;
+  margin-top: 3rem; /* Adjust margin-top as needed */
   padding: 0;
+  list-style-type: none;
+  width: 35rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 li {
   margin: 10px 0;
+  padding: 10px;
+  background-color: #161B22;
+  border-radius: 1.2rem;
   cursor: pointer;
 }
 
 .mainContent {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   flex: 1;
 }
 
@@ -177,4 +195,54 @@ li {
   border-radius: 1rem;
   margin: 0.5rem 1rem;
   padding: 1rem;
+}
+
+.menuToggleIcon {
+  position: relative;
+  width: 30px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menuToggleIcon span {
+  display: block;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  background: white;
+  border-radius: 9px;
+  opacity: 1;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+}
+
+.menuToggleIcon span:nth-child(1) {
+  top: 0;
+}
+
+.menuToggleIcon span:nth-child(2) {
+  top: 10px;
+}
+
+.menuToggleIcon span:nth-child(3) {
+  top: 20px;
+}
+
+.menuToggleIcon.open span:nth-child(1) {
+  top: 10px;
+  transform: rotate(45deg);
+}
+
+.menuToggleIcon.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menuToggleIcon.open span:nth-child(3) {
+  top: 10px;
+  transform: rotate(-45deg);
 }

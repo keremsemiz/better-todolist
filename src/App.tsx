@@ -74,11 +74,11 @@ const App: React.FC = () => {
       <div className="mainContent">
         <section className={`leftMenu ${showSideMenu ? 'expanded' : ''}`}>
           <div onClick={toggleSideBar} className="menuIcon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="35" viewBox="0 0 47 35" fill="none">
-              <line x1="47" y1="0.5" y2="0.5" stroke="white"/>
-              <line x1="47" y1="34.5" y2="34.5" stroke="white"/>
-              <line x1="47" y1="18.3096" y2="18.3096" stroke="white"/>
-            </svg>
+            <div className={`menuToggleIcon ${showSideMenu ? 'open' : ''}`}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
           </div>
           {!showSideMenu && (
             <>
@@ -131,20 +131,20 @@ const App: React.FC = () => {
             onChange={handleImportanceChange}
             placeholder="Enter importance"
           />
-          <button onClick={addTodo}>Add Task</button>
+          <button className='addTask' onClick={addTodo}>Add Task</button>
         </div>
+        <ul>
+          {todos.map(todo => (
+            <li
+              key={todo.id}
+              style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+              onClick={() => toggleTodo(todo.id)}
+            >
+              {todo.text} {importance}
+            </li>
+          ))}
+        </ul>
       </div>
-      <ul>
-        {todos.map(todo => (
-          <li
-            key={todo.id}
-            style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-            onClick={() => toggleTodo(todo.id)}
-          >
-            {todo.text} {importance}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 }
