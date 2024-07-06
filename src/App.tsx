@@ -13,6 +13,8 @@ const App: React.FC = () => {
   const [newTodo, setNewTodo] = useState<string>('');
   const [user, setUser] = useState<string>('');
   const [importance, setImportance] = useState<string>('');
+  const [showUserInput, setShowUserInput] = useState<boolean>(false);
+  const [showSideMenu, setShowSideMenu] = useState<boolean>(false);
 
   const addTodo = () => {
     if (newTodo.trim() !== '') {
@@ -44,32 +46,75 @@ const App: React.FC = () => {
     setImportance(event.target.value);
   };
 
+  const toggleUserInput = () => {
+    setShowUserInput(!showUserInput);
+  };
+
+  const toggleSideBar = () => {
+    setShowSideMenu(!showSideMenu);
+  };
+
   return (
     <div className="App">
       <header>
         <h1 className="userGreeting">Hey, {user}! </h1>
-        <input
-          className="taskName"
-          type="text"
-          value={user}
-          onChange={handleUserChange}
-          placeholder="Enter your name"
-        />
+        {showUserInput && (
+          <input
+            className="enterName"
+            type="text"
+            value={user}
+            onChange={handleUserChange}
+            placeholder="Enter your name"
+          />
+        )}
+        <div className="menuIconHeader">
+          <a onClick={toggleUserInput}><UilUser /></a>
+        </div>
       </header>
       <div className="mainContent">
-      <section className="leftMenu">
-          <div className="menuIcon">
-            <UilSearch />
+        <section className={`leftMenu ${showSideMenu ? 'expanded' : ''}`}>
+          <div onClick={toggleSideBar} className="menuIcon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="47" height="35" viewBox="0 0 47 35" fill="none">
+              <line x1="47" y1="0.5" y2="0.5" stroke="white"/>
+              <line x1="47" y1="34.5" y2="34.5" stroke="white"/>
+              <line x1="47" y1="18.3096" y2="18.3096" stroke="white"/>
+            </svg>
           </div>
-          <div className="menuIcon">
-            <UilStar />
-          </div>
-          <div className="menuIcon">
-            <UilHeart />
-          </div>
-          <div className="menuIcon">
-            <UilUser />
-          </div>
+          {!showSideMenu && (
+            <>
+              <div className="menuIcon">
+                <UilSearch />
+              </div>
+              <div className="menuIcon">
+                <UilStar />
+              </div>
+              <div className="menuIcon">
+                <UilHeart />
+              </div>
+              <div className="menuIcon">
+                <UilUser />
+              </div>
+            </>
+          )}
+          {showSideMenu && (
+            <div className="sideMenuContent">
+              <div className="menuSection">
+                <h2>Menu</h2>
+                <div className="menuItem">Item 1</div>
+                <div className="menuItem">Item 2</div>
+              </div>
+              <div className="menuSection">
+                <h2>Usage Statistics</h2>
+                <div className="menuItem">Stat 1</div>
+                <div className="menuItem">Stat 2</div>
+              </div>
+              <div className="menuSection">
+                <h2>Settings</h2>
+                <div className="menuItem">Setting 1</div>
+                <div className="menuItem">Setting 2</div>
+              </div>
+            </div>
+          )}
         </section>
         <div className="inputHolders">
           <input
