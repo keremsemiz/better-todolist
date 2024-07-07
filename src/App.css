@@ -276,4 +276,27 @@ li {
   padding: 10px;
   font-size: 16px;
   color: #FFFFFF;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 1.5rem;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23FFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Add custom arrow */
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+}
+
+.importance:focus {
+  outline: none;
+  border-color: skyblue;
+}
+.searchInput {
+  height: 1rem;
+  background-color: #0D1117;
+  border: 1px solid #30363D;
+  border-radius: 1.2rem;
+  margin: 10px;
+  padding: 10px;
+  font-size: 16px;
+  color: #FFFFFF;
+  width: 35rem;
 }

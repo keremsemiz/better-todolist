@@ -14,10 +14,15 @@ const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
   const [user, setUser] = useState<string>('');
-  const [importance, setImportance] = useState<string>('');
+  const [importance, setImportance] = useState<string>('!');
   const [showUserInput, setShowUserInput] = useState<boolean>(false);
   const [showSideMenu, setShowSideMenu] = useState<boolean>(false);
-  const [useLocalStorage, setUseLocalStorage] = useState<boolean>(false);
+  const [useLocalStorage, setUseLocalStorage] = useState<boolean>(() => {
+    const storedUseLocalStorage = localStorage.getItem('useLocalStorage');
+    return storedUseLocalStorage ? JSON.parse(storedUseLocalStorage) : false;
+  });
+  const [showSearchInput, setShowSearchInput] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   useEffect(() => {
     if (useLocalStorage) {
@@ -29,6 +34,7 @@ const App: React.FC = () => {
   }, [useLocalStorage]);
 
   useEffect(() => {
+    localStorage.setItem('useLocalStorage', JSON.stringify(useLocalStorage));
     if (useLocalStorage) {
       localStorage.setItem('todos', JSON.stringify(todos));
     }
@@ -42,10 +48,9 @@ const App: React.FC = () => {
         { id: Date.now(), text: newTodo, completed: false, importance, date: currentDate }
       ]);
       setNewTodo('');
-      setImportance('');
+      setImportance('!');
     }
   };
-  
 
   const toggleTodo = (id: number) => {
     setTodos(
@@ -63,8 +68,12 @@ const App: React.FC = () => {
     setUser(event.target.value);
   };
 
-  const handleImportanceChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleImportanceChange: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
     setImportance(event.target.value);
+  };
+
+  const handleSearchChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    setSearchTerm(event.target.value);
   };
 
   const toggleUserInput = () => {
@@ -78,6 +87,12 @@ const App: React.FC = () => {
   const handleLocalStorageToggle = () => {
     setUseLocalStorage(!useLocalStorage);
   };
+
+  const toggleSearchInput = () => {
+    setShowSearchInput(!showSearchInput);
+  };
+
+  const filteredTodos = todos.filter(todo => todo.text.toLowerCase().includes(searchTerm.toLowerCase()));
 
   return (
     <div className="App">
@@ -109,7 +124,7 @@ const App: React.FC = () => {
           </div>
           {!showSideMenu && (
             <>
-              <div className="menuIcon">
+              <div className="menuIcon" onClick={toggleSearchInput}>
                 <UilSearch />
               </div>
               <div className="menuIcon">
@@ -154,6 +169,15 @@ const App: React.FC = () => {
           )}
         </section>
         <div className="content">
+          {showSearchInput && (
+            <input
+              className="searchInput"
+              type="text"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              placeholder="Search todos..."
+            />
+          )}
           <div className="inputHolders">
             <input
               className="taskName"
@@ -162,17 +186,19 @@ const App: React.FC = () => {
               onChange={handleInputChange}
               placeholder="Enter new task"
             />
-            <input
+            <select
               className="importance"
-              type="text"
               value={importance}
               onChange={handleImportanceChange}
-              placeholder="Enter importance"
-            />
+            >
+              <option value="!">!</option>
+              <option value="!!">!!</option>
+              <option value="!!!">!!!</option>
+            </select>
             <button className='addTask' onClick={addTodo}>Add Task</button>
           </div>
           <ul>
-            {todos.map(todo => (
+            {filteredTodos.map(todo => (
               <li
                 key={todo.id}
                 style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
