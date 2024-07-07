@@ -6,6 +6,7 @@ interface Todo {
   id: number;
   text: string;
   completed: boolean;
+  importance: string;
 }
 
 const App: React.FC = () => {
@@ -20,9 +21,10 @@ const App: React.FC = () => {
     if (newTodo.trim() !== '') {
       setTodos([
         ...todos,
-        { id: Date.now(), text: newTodo, completed: false }
+        { id: Date.now(), text: newTodo, completed: false, importance }
       ]);
       setNewTodo('');
+      setImportance('');
     }
   };
 
@@ -58,17 +60,19 @@ const App: React.FC = () => {
     <div className="App">
       <header>
         <h1 className="userGreeting">Hey, {user}! </h1>
-        {showUserInput && (
-          <input
-            className="enterName"
-            type="text"
-            value={user}
-            onChange={handleUserChange}
-            placeholder="Enter your name"
-          />
-        )}
-        <div className="menuIconHeader">
-          <a onClick={toggleUserInput}><UilUser /></a>
+        <div className="profileDropdown">
+          <a className='menuIconHeader' onClick={toggleUserInput}><UilUser /></a>
+          {showUserInput && (
+            <div className="dropdownContent">
+              <input
+                className="enterName"
+                type="text"
+                value={user}
+                onChange={handleUserChange}
+                placeholder="Enter your name"
+              />
+            </div>
+          )}
         </div>
       </header>
       <div className="mainContent">
@@ -116,34 +120,36 @@ const App: React.FC = () => {
             </div>
           )}
         </section>
-        <div className="inputHolders">
-          <input
-            className="taskName"
-            type="text"
-            value={newTodo}
-            onChange={handleInputChange}
-            placeholder="Enter new task"
-          />
-          <input
-            className="importance"
-            type="text"
-            value={importance}
-            onChange={handleImportanceChange}
-            placeholder="Enter importance"
-          />
-          <button className='addTask' onClick={addTodo}>Add Task</button>
+        <div className="content">
+          <div className="inputHolders">
+            <input
+              className="taskName"
+              type="text"
+              value={newTodo}
+              onChange={handleInputChange}
+              placeholder="Enter new task"
+            />
+            <input
+              className="importance"
+              type="text"
+              value={importance}
+              onChange={handleImportanceChange}
+              placeholder="Enter importance"
+            />
+            <button className='addTask' onClick={addTodo}>Add Task</button>
+          </div>
+          <ul>
+            {todos.map(todo => (
+              <li
+                key={todo.id}
+                style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+                onClick={() => toggleTodo(todo.id)}
+              >
+                {todo.text} - Importance: {todo.importance}
+              </li>
+            ))}
+          </ul>
         </div>
-        <ul>
-          {todos.map(todo => (
-            <li
-              key={todo.id}
-              style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-              onClick={() => toggleTodo(todo.id)}
-            >
-              {todo.text} {importance}
-            </li>
-          ))}
-        </ul>
       </div>
     </div>
   );
