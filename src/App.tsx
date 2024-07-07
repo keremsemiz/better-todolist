@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { UilSearch, UilStar, UilHeart, UilUser } from '@iconscout/react-unicons';
 
@@ -7,6 +7,7 @@ interface Todo {
   text: string;
   completed: boolean;
   importance: string;
+  date: string;
 }
 
 const App: React.FC = () => {
@@ -16,17 +17,35 @@ const App: React.FC = () => {
   const [importance, setImportance] = useState<string>('');
   const [showUserInput, setShowUserInput] = useState<boolean>(false);
   const [showSideMenu, setShowSideMenu] = useState<boolean>(false);
+  const [useLocalStorage, setUseLocalStorage] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (useLocalStorage) {
+      const storedTodos = localStorage.getItem('todos');
+      if (storedTodos) {
+        setTodos(JSON.parse(storedTodos));
+      }
+    }
+  }, [useLocalStorage]);
+
+  useEffect(() => {
+    if (useLocalStorage) {
+      localStorage.setItem('todos', JSON.stringify(todos));
+    }
+  }, [todos, useLocalStorage]);
 
   const addTodo = () => {
     if (newTodo.trim() !== '') {
+      const currentDate = new Date().toLocaleString();
       setTodos([
         ...todos,
-        { id: Date.now(), text: newTodo, completed: false, importance }
+        { id: Date.now(), text: newTodo, completed: false, importance, date: currentDate }
       ]);
       setNewTodo('');
       setImportance('');
     }
   };
+  
 
   const toggleTodo = (id: number) => {
     setTodos(
@@ -54,6 +73,10 @@ const App: React.FC = () => {
 
   const toggleSideBar = () => {
     setShowSideMenu(!showSideMenu);
+  };
+
+  const handleLocalStorageToggle = () => {
+    setUseLocalStorage(!useLocalStorage);
   };
 
   return (
@@ -103,19 +126,29 @@ const App: React.FC = () => {
           {showSideMenu && (
             <div className="sideMenuContent">
               <div className="menuSection">
-                <h2>Menu</h2>
-                <div className="menuItem">Item 1</div>
-                <div className="menuItem">Item 2</div>
-              </div>
-              <div className="menuSection">
                 <h2>Usage Statistics</h2>
-                <div className="menuItem">Stat 1</div>
-                <div className="menuItem">Stat 2</div>
+                <div className="menuItem">
+                  <p>Total tasks: {todos.length}</p>
+                </div>
+                <div className="menuItem">
+                  <p>Completed Tasks: {todos.filter(todo => todo.completed).length}</p>
+                </div>
               </div>
               <div className="menuSection">
                 <h2>Settings</h2>
-                <div className="menuItem">Setting 1</div>
-                <div className="menuItem">Setting 2</div>
+                <div className="menuItem">
+                  Enable local storage? 
+                  <input 
+                    type="checkbox" 
+                    name="toggleLocalStorage" 
+                    checked={useLocalStorage} 
+                    onChange={handleLocalStorageToggle} 
+                  />
+                </div>
+                <div className="menuItem">
+                  Send usage statistics?
+                  <input type="checkbox" name="toggleUsageStatistics" id="" />
+                </div>
               </div>
             </div>
           )}
@@ -145,10 +178,10 @@ const App: React.FC = () => {
                 style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
                 onClick={() => toggleTodo(todo.id)}
               >
-                {todo.text} - Importance: {todo.importance}
+                {todo.text} - Importance: {todo.importance} - Date: {todo.date}
               </li>
             ))}
-          </ul>
+          </ul> 
         </div>
       </div>
     </div>
