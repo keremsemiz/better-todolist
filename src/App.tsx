@@ -8,6 +8,7 @@ interface Todo {
   completed: boolean;
   importance: string;
   date: string;
+  favorite: boolean;
 }
 
 const App: React.FC = () => {
@@ -23,21 +24,22 @@ const App: React.FC = () => {
   });
   const [showSearchInput, setShowSearchInput] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const [showFavorites, setShowFavorites] = useState<boolean>(false);
 
   useEffect(() => {
-    if (useLocalStorage) {
-      const storedTodos = localStorage.getItem('todos');
-      if (storedTodos) {
-        setTodos(JSON.parse(storedTodos));
-      }
+    const storedTodos = localStorage.getItem('todos');
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
     }
-  }, [useLocalStorage]);
+  }, []);
 
   useEffect(() => {
-    localStorage.setItem('useLocalStorage', JSON.stringify(useLocalStorage));
     if (useLocalStorage) {
       localStorage.setItem('todos', JSON.stringify(todos));
+    } else {
+      localStorage.removeItem('todos');
     }
+    localStorage.setItem('useLocalStorage', JSON.stringify(useLocalStorage));
   }, [todos, useLocalStorage]);
 
   const addTodo = () => {
@@ -45,7 +47,7 @@ const App: React.FC = () => {
       const currentDate = new Date().toLocaleString();
       setTodos([
         ...todos,
-        { id: Date.now(), text: newTodo, completed: false, importance, date: currentDate }
+        { id: Date.now(), text: newTodo, completed: false, importance, date: currentDate, favorite: false }
       ]);
       setNewTodo('');
       setImportance('!');
@@ -56,6 +58,14 @@ const App: React.FC = () => {
     setTodos(
       todos.map(todo =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  };
+
+  const toggleFavorite = (id: number) => {
+    setTodos(
+      todos.map(todo =>
+        todo.id === id ? { ...todo, favorite: !todo.favorite } : todo
       )
     );
   };
@@ -92,7 +102,12 @@ const App: React.FC = () => {
     setShowSearchInput(!showSearchInput);
   };
 
+  const toggleShowFavorites = () => {
+    setShowFavorites(!showFavorites);
+  };
+
   const filteredTodos = todos.filter(todo => todo.text.toLowerCase().includes(searchTerm.toLowerCase()));
+  const favoriteTodos = todos.filter(todo => todo.favorite);
 
   return (
     <div className="App">
@@ -127,7 +142,7 @@ const App: React.FC = () => {
               <div className="menuIcon" onClick={toggleSearchInput}>
                 <UilSearch />
               </div>
-              <div className="menuIcon">
+              <div className="menuIcon" onClick={toggleShowFavorites}>
                 <UilStar />
               </div>
               <div className="menuIcon">
@@ -198,16 +213,21 @@ const App: React.FC = () => {
             <button className='addTask' onClick={addTodo}>Add Task</button>
           </div>
           <ul>
-            {filteredTodos.map(todo => (
+            {(showFavorites ? favoriteTodos : filteredTodos).map(todo => (
               <li
                 key={todo.id}
                 style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
-                onClick={() => toggleTodo(todo.id)}
               >
                 {todo.text} - Importance: {todo.importance} - Date: {todo.date}
+                <button onClick={() => toggleFavorite(todo.id)}>
+                  {todo.favorite ? 'Unfavorite' : 'Favorite'}
+                </button>
+                <button onClick={() => toggleTodo(todo.id)}>
+                  {todo.completed ? 'Undo' : 'Complete'}
+                </button>
               </li>
             ))}
-          </ul> 
+          </ul>
         </div>
       </div>
     </div>
