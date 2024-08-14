@@ -1,30 +1,27 @@
-# React + TypeScript + Vite
+# easytask
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This website/tool is one of the easiest ways to keep track of your work and chores!
 
-Currently, two official plugins are available:
+Currently, two official versions are available:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- The mobile Fast Refresh with [Babel](https://babeljs.io/)
 
-## Expanding the ESLint configuration
+- The web-based stable with [SWC](https://swc.rs/) for Fast Refresh
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Utilising the application
 
-- Configure the top-level `parserOptions` property like this:
+If you are utilising EasyTask for your daily tasks we recommend you configure the Send Usage Statistics Option
 
-```js
+- Configure the top-level `usageStatistic` property like this:
+
+```typescript
 export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
+  // other TSX
+  <div className="menuItem">
+      Send usage statistics?
+    <input type="checkbox" name="toggleUsageStatistics" id="" />
+  </div>
 }
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+- Before use, make sure to try out the deployed versions for testing purposes
