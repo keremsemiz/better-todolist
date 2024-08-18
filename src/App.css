@@ -18,6 +18,7 @@ body {
   margin-left: 1rem;
   margin-right: 1rem;
   font-size: 1.5rem;
+  color: #58A6FF;
 }
 
 header {
@@ -29,35 +30,76 @@ header {
   align-items: center;
   position: relative;
   padding: 1rem;
-}
-
-header input {
-  margin-left: 1rem;
-  margin-right: 1rem;
-  width: 100%;
-  max-width: 20rem;
+  background-color: #161B22; 
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .profileDropdown {
   position: relative;
 }
 
+.menuIconHeader {
+  border-radius: 50%;
+  border: 2px solid #30363D;
+  background: #161B22;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.menuIconHeader:hover {
+  border-color: #58A6FF; 
+
 .dropdownContent {
   display: flex;
   flex-direction: column;
   position: absolute;
   right: 0;
-  top: 100%;
+  top: 110%; 
   background-color: #0D1117;
   border: 1px solid #30363D;
   border-radius: 1.2rem;
-  padding: 10px;
+  padding: 1rem;
   z-index: 2;
-  margin-top: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
 }
 
-.dropdownContent input {
-  margin: 0;
+.enterName {
+  height: 2.5rem;
+  background-color: #161B22;
+  border: 1px solid #30363D;
+  border-radius: 1.2rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  color: #FFFFFF;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.enterName:focus {
+  outline: none;
+  border-color: #58A6FF;
+  box-shadow: 0 0 5px rgba(88, 166, 255, 0.5); 
+}
+
+.saveUserName {
+  background-color: #58A6FF; 
+  border: none;
+  border-radius: 1.2rem;
+  padding: 0.5rem 1rem;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.saveUserName:hover {
+  background-color: #4a95db;
 }
 
 .mainContent {
@@ -92,10 +134,6 @@ header input {
   width: 2rem;
 }
 
-svg {
-  margin: auto;
-}
-
 .menuIcon {
   margin-top: 1rem;
   border-radius: 16px;
@@ -111,28 +149,7 @@ svg {
 }
 
 .menuIcon:hover {
-  border: 2px solid skyblue;
-}
-
-.menuIconHeader {
-  border-radius: 16px;
-  border: 1px solid #30363D;
-  background: #161B22;
-  width: 63px;
-  height: 63px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-left: 0;
-  margin-right: 1rem;
-  transition: 1s all;
-}
-
-.menuIconHeader:hover {
-  border: 2px solid skyblue;
+  border: 2px solid #58A6FF;
 }
 
 .taskName {
@@ -145,18 +162,6 @@ svg {
   font-size: 16px;
   color: #FFFFFF;
   flex: 1;
-}
-
-.enterName {
-  height: 2.5rem;
-  background-color: #0D1117;
-  border: 1px solid #30363D;
-  border-radius: 1.2rem;
-  margin: 10px;
-  padding: 10px;
-  font-size: 16px;
-  color: #FFFFFF;
-  margin: auto 0;
 }
 
 .addTask {
@@ -199,6 +204,11 @@ li {
   background-color: #161B22;
   border-radius: 1.2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+li:hover {
+  background-color: #1f2329;
 }
 
 li button {
@@ -209,6 +219,7 @@ li button {
   border-radius: 5px;
   color: white;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 li button:hover {
@@ -331,7 +342,6 @@ li button:hover {
   max-width: 35rem;
 }
 
-/* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .header, .mainContent {
     flex-direction: column;
@@ -392,4 +402,5 @@ li button:hover {
     width: 100%;
     margin: 0.5rem 0;
   }
+}
 }

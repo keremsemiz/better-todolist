@@ -211,7 +211,7 @@ const App: React.FC = () => {
               <option value="!!!">!!!</option>
             </select>
             <button className='addTask' onClick={addTodo}>Add Task</button>
-          </div>
+          </div>  
           <ul>
             {(showFavorites ? favoriteTodos : filteredTodos).map(todo => (
               <li
