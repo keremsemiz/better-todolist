@@ -14,12 +14,9 @@ interface Todo {
 const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodo, setNewTodo] = useState<string>('');
-  const [user, setUser] = useState<string>(() => {
-    const storedUser = localStorage.getItem('user');
-    return storedUser ? storedUser : '';
-  });
+  const [user, setUser] = useState<string>('');
   const [importance, setImportance] = useState<string>('!');
-  const [showUserInput, setShowUserInput] = useState<boolean>(!user);
+  const [showUserInput, setShowUserInput] = useState<boolean>(false);
   const [showSideMenu, setShowSideMenu] = useState<boolean>(false);
   const [useLocalStorage, setUseLocalStorage] = useState<boolean>(() => {
     const storedUseLocalStorage = localStorage.getItem('useLocalStorage');
@@ -44,10 +41,6 @@ const App: React.FC = () => {
     }
     localStorage.setItem('useLocalStorage', JSON.stringify(useLocalStorage));
   }, [todos, useLocalStorage]);
-
-  useEffect(() => {
-    localStorage.setItem('user', user);
-  }, [user]);
 
   const addTodo = () => {
     if (newTodo.trim() !== '') {
@@ -93,6 +86,10 @@ const App: React.FC = () => {
     setSearchTerm(event.target.value);
   };
 
+  const toggleUserInput = () => {
+    setShowUserInput(!showUserInput);
+  };
+
   const toggleSideBar = () => {
     setShowSideMenu(!showSideMenu);
   };
@@ -115,9 +112,9 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <header>
-        <h1 className="userGreeting">Hey, {user || 'there'}!</h1>
+        <h1 className="userGreeting">Hey, {user}! </h1>
         <div className="profileDropdown">
-          <a className='menuIconHeader' onClick={() => setShowUserInput(true)}><UilUser /></a>
+          <a className='menuIconHeader' onClick={toggleUserInput}><UilUser /></a>
           {showUserInput && (
             <div className="dropdownContent">
               <input
@@ -127,12 +124,6 @@ const App: React.FC = () => {
                 onChange={handleUserChange}
                 placeholder="Enter your name"
               />
-              <button
-                className="saveUserName"
-                onClick={() => setShowUserInput(false)}
-              >
-                Save
-              </button>
             </div>
           )}
         </div>
