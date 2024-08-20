@@ -1,9 +1,11 @@
+/* Base styling */
 body {
   background-color: #010409;
   color: #FFFFFF;
   font-family: 'Commissioner', sans-serif;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .App {
@@ -13,25 +15,20 @@ body {
   overflow-x: hidden;
 }
 
-.userGreeting {
-  text-align: left;
-  margin-left: 1rem;
-  margin-right: 1rem;
-  font-size: 1.5rem;
-  color: #58A6FF;
-}
-
 header {
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   height: auto;
   border-bottom: 1px solid #30363D;
   display: flex;
-  align-items: center;
-  position: relative;
   padding: 1rem;
-  background-color: #161B22; 
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  background-color: #161B22;
+}
+
+.userGreeting {
+  font-size: 1.5rem;
+  color: #58A6FF;
 }
 
 .profileDropdown {
@@ -52,19 +49,19 @@ header {
 }
 
 .menuIconHeader:hover {
-  border-color: #58A6FF; 
+  border-color: #58A6FF;
+}
 
 .dropdownContent {
   display: flex;
   flex-direction: column;
   position: absolute;
   right: 0;
-  top: 110%; 
+  top: 110%;
   background-color: #0D1117;
   border: 1px solid #30363D;
   border-radius: 1.2rem;
   padding: 1rem;
-  z-index: 2;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
 }
 
@@ -77,29 +74,13 @@ header {
   padding: 0.5rem 1rem;
   font-size: 16px;
   color: #FFFFFF;
-  width: 100%;
   transition: border-color 0.3s ease;
 }
 
 .enterName:focus {
   outline: none;
   border-color: #58A6FF;
-  box-shadow: 0 0 5px rgba(88, 166, 255, 0.5); 
-}
-
-.saveUserName {
-  background-color: #58A6FF; 
-  border: none;
-  border-radius: 1.2rem;
-  padding: 0.5rem 1rem;
-  font-size: 16px;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.saveUserName:hover {
-  background-color: #4a95db;
+  box-shadow: 0 0 5px rgba(88, 166, 255, 0.5);
 }
 
 .mainContent {
@@ -174,6 +155,13 @@ header {
   border: 1px solid #30363D;
   color: white;
   margin: 10px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.addTask:hover {
+  background-color: #58A6FF;
+  border-color: #58A6FF;
+  color: #010409;
 }
 
 .inputHolders {
@@ -195,212 +183,173 @@ ul {
   margin-right: auto;
 }
 
-li {
+.task-item {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin: 10px 0;
+  align-items: center;
   padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #30363D;
   background-color: #161B22;
-  border-radius: 1.2rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  margin-bottom: 10px;
 }
 
-li:hover {
-  background-color: #1f2329;
+.completed-task {
+  opacity: 0.6;
+  text-decoration: line-through;
 }
 
-li button {
-  margin-left: 10px;
+.task-item button {
   padding: 5px 10px;
-  background-color: #30363D;
+  border-radius: 4px;
   border: none;
-  border-radius: 5px;
+  background-color: #30363D;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  margin-left: 5px;
 }
 
-li button:hover {
+.task-item button:hover {
   background-color: #50575E;
 }
 
-.sideMenuContent {
-  padding: 1rem;
+.feedback {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: bold;
   color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1000;
+  transition: opacity 0.3s ease;
 }
 
-.menuSection {
-  margin: 1rem 0;
-  text-align: left;
-  width: 100%;
+.feedback-success {
+  background-color: green;
 }
 
-.menuSection h2 {
-  margin: 0.5rem 0;
-  padding-left: 1rem;
+.feedback-error {
+  background-color: red;
 }
 
-.menuItem {
-  background-color: #161B22;
-  border-radius: 1rem;
-  margin: 0.5rem 1rem;
-  padding: 1rem;
+/* Dark mode and light mode */
+.dark-theme {
+  --bg-color: #010409;
+  --text-color: #FFFFFF;
+  --header-bg: #161B22;
+  --input-bg: #0D1117;
+  --border-color: #30363D;
+  --button-bg: #161B22;
+  --button-hover-bg: #58A6FF;
+  --button-text-color: #FFFFFF;
+  --feedback-bg: rgba(0, 0, 0, 0.7);
 }
 
-.menuToggleIcon {
-  position: relative;
-  width: 30px;
-  height: 24px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+.light-theme {
+  --bg-color: #F0F0F0;
+  --text-color: #010409;
+  --header-bg: #E5E5E5;
+  --input-bg: #FFFFFF;
+  --border-color: #CCCCCC;
+  --button-bg: #E5E5E5;
+  --button-hover-bg: #58A6FF;
+  --button-text-color: #010409;
+  --feedback-bg: rgba(0, 0, 0, 0.7);
 }
 
-.menuToggleIcon span {
-  display: block;
-  position: absolute;
-  height: 4px;
-  width: 100%;
-  background: white;
-  border-radius: 9px;
-  opacity: 1;
-  left: 0;
-  transform: rotate(0deg);
-  transition: .25s ease-in-out;
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
-.menuToggleIcon span:nth-child(1) {
-  top: 0;
+header {
+  background-color: var(--header-bg);
 }
 
-.menuToggleIcon span:nth-child(2) {
-  top: 10px;
+input, select, .taskName, .enterName {
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
 }
 
-.menuToggleIcon span:nth-child(3) {
-  top: 20px;
+button, .addTask, .task-item button {
+  background-color: var(--button-bg);
+  color: var(--button-text-color);
 }
 
-.menuToggleIcon.open span:nth-child(1) {
-  top: 10px;
-  transform: rotate(45deg);
+button:hover, .addTask:hover, .task-item button:hover {
+  background-color: var(--button-hover-bg);
+  color: var(--text-color);
 }
 
-.menuToggleIcon.open span:nth-child(2) {
-  opacity: 0;
+.feedback {
+  background-color: var(--feedback-bg);
 }
 
-.menuToggleIcon.open span:nth-child(3) {
-  top: 10px;
-  transform: rotate(-45deg);
-}
-
-.content {
-  margin-left: 5rem;
-  padding-left: 1rem;
-  padding-top: 1rem;
-  width: 100%;
-  transition: margin-left 0.4s;
-}
-
-.importance {
-  background-color: #0D1117;
-  border: 1px solid #30363D;
-  border-radius: 1.2rem;
-  margin: 10px;
-  padding: 10px;
-  font-size: 16px;
-  color: #FFFFFF;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  padding-right: 1.5rem;
-  background-image: url('data:image/svg+xml;utf8,<svg fill="%23FFF" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>'); /* Add custom arrow */
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-}
-
-.importance:focus {
-  outline: none;
-  border-color: skyblue;
-}
-
-.searchInput {
-  height: 2.5rem;
-  background-color: #0D1117;
-  border: 1px solid #30363D;
-  border-radius: 1.2rem;
-  margin: 10px;
-  padding: 10px;
-  font-size: 16px;
-  color: #FFFFFF;
-  width: 100%;
-  max-width: 35rem;
-}
-
+/* Responsiveness */
 @media (max-width: 768px) {
-  .header, .mainContent {
-    flex-direction: column;
+  header, .mainContent {
+      flex-direction: column;
   }
-  
+
   .leftMenu {
-    width: 100%;
-    height: auto;
-    position: static;
-    flex-direction: row;
-    justify-content: space-between;
+      width: 100%;
+      height: auto;
+      position: static;
+      flex-direction: row;
+      justify-content: space-between;
   }
 
   .leftMenu.expanded {
-    width: 100%;
+      width: 100%;
   }
 
   .menuIcon {
-    width: 50px;
-    height: 50px;
+      width: 50px;
+      height: 50px;
   }
 
   .content {
-    margin-left: 0;
+      margin-left: 0;
   }
 }
 
 @media (max-width: 480px) {
   .userGreeting {
-    font-size: 1.2rem;
-    text-align: center;
+      font-size: 1.2rem;
+      text-align: center;
   }
 
   header {
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0.5rem;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 0.5rem;
   }
 
   .profileDropdown {
-    width: 100%;
+      width: 100%;
   }
 
   .dropdownContent {
-    width: 100%;
+      width: 100%;
   }
 
   .mainContent {
-    padding-top: 0.5rem;
+      padding-top: 0.5rem;
   }
 
   .inputHolders {
-    flex-direction: column;
-    align-items: stretch;
+      flex-direction: column;
+      align-items: stretch;
   }
 
-  .taskName, .importance, .addTask, .searchInput {
-    width: 100%;
-    margin: 0.5rem 0;
+  .taskName, .addTask, .searchInput {
+      width: 100%;
+      margin: 0.5rem 0;
   }
-}
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { UilSearch, UilStar, UilHeart, UilUser } from '@iconscout/react-unicons';
+import { UilSearch, UilStar, UilHeart, UilUser, UilMoon, UilSun } from '@iconscout/react-unicons';
 
 interface Todo {
   id: number;
@@ -25,6 +25,10 @@ const App: React.FC = () => {
   const [showSearchInput, setShowSearchInput] = useState<boolean>(false);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showFavorites, setShowFavorites] = useState<boolean>(false);
+  const [isEditing, setIsEditing] = useState<number | null>(null);
+  const [editText, setEditText] = useState<string>('');
+  const [darkMode, setDarkMode] = useState<boolean>(true);
+  const [feedback, setFeedback] = useState<{ message: string, type: 'success' | 'error' } | null>(null);
 
   useEffect(() => {
     const storedTodos = localStorage.getItem('todos');
@@ -42,6 +46,10 @@ const App: React.FC = () => {
     localStorage.setItem('useLocalStorage', JSON.stringify(useLocalStorage));
   }, [todos, useLocalStorage]);
 
+  useEffect(() => {
+    document.body.className = darkMode ? 'dark-theme' : 'light-theme';
+  }, [darkMode]);
+
   const addTodo = () => {
     if (newTodo.trim() !== '') {
       const currentDate = new Date().toLocaleString();
@@ -51,6 +59,9 @@ const App: React.FC = () => {
       ]);
       setNewTodo('');
       setImportance('!');
+      triggerFeedback('Task added successfully', 'success');
+    } else {
+      triggerFeedback('Task cannot be empty', 'error');
     }
   };
 
@@ -106,6 +117,31 @@ const App: React.FC = () => {
     setShowFavorites(!showFavorites);
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const triggerFeedback = (message: string, type: 'success' | 'error') => {
+    setFeedback({ message, type });
+    setTimeout(() => setFeedback(null), 3000);
+  };
+
+  const editTodo = (id: number, text: string) => {
+    setIsEditing(id);
+    setEditText(text);
+  };
+
+  const saveEdit = (id: number) => {
+    setTodos(
+      todos.map(todo =>
+        todo.id === id ? { ...todo, text: editText } : todo
+      )
+    );
+    setIsEditing(null);
+    setEditText('');
+    triggerFeedback('Task updated successfully', 'success');
+  };
+
   const filteredTodos = todos.filter(todo => todo.text.toLowerCase().includes(searchTerm.toLowerCase()));
   const favoriteTodos = todos.filter(todo => todo.favorite);
 
@@ -126,6 +162,9 @@ const App: React.FC = () => {
               />
             </div>
           )}
+        </div>
+        <div className="themeSwitcher" onClick={toggleDarkMode}>
+          {darkMode ? <UilSun /> : <UilMoon />}
         </div>
       </header>
       <div className="mainContent">
@@ -176,8 +215,7 @@ const App: React.FC = () => {
                   />
                 </div>
                 <div className="menuItem">
-                  Send usage statistics?
-                  <input type="checkbox" name="toggleUsageStatistics" id="" />
+                  <button onClick={() => setTodos([])}>Clear All Tasks</button>
                 </div>
               </div>
             </div>
@@ -216,20 +254,47 @@ const App: React.FC = () => {
             {(showFavorites ? favoriteTodos : filteredTodos).map(todo => (
               <li
                 key={todo.id}
-                style={{ textDecoration: todo.completed ? 'line-through' : 'none' }}
+                className={todo.completed ? 'completed-task' : 'task-item'}
               >
-                {todo.text} - Importance: {todo.importance} - Date: {todo.date}
-                <button onClick={() => toggleFavorite(todo.id)}>
-                  {todo.favorite ? 'Unfavorite' : 'Favorite'}
-                </button>
-                <button onClick={() => toggleTodo(todo.id)}>
-                  {todo.completed ? 'Undo' : 'Complete'}
-                </button>
+                {isEditing === todo.id ? (
+                  <>
+                    <input
+                      className="editTaskInput"
+                      type="text"
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
+                    />
+                    <button onClick={() => saveEdit(todo.id)}>Save</button>
+                  </>
+                ) : (
+                  <>
+                    {todo.text} - Importance: {todo.importance} - Date: {todo.date}
+                    <div>
+                      <button className="select-task" onClick={() => toggleFavorite(todo.id)}>
+                        {todo.favorite ? 'Unfavorite' : 'Favorite'}
+                      </button>
+                      <button className="edit-task" onClick={() => editTodo(todo.id, todo.text)}>
+                        Edit
+                      </button>
+                      <button className="edit-task" onClick={() => toggleTodo(todo.id)}>
+                        {todo.completed ? 'Undo' : 'Complete'}
+                      </button>
+                      <button className="delete-task" onClick={() => setTodos(todos.filter(t => t.id !== todo.id))}>
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                )}
               </li>
             ))}
           </ul>
         </div>
       </div>
+      {feedback && (
+        <div className={`feedback feedback-${feedback.type}`}>
+          {feedback.message}
+        </div>
+      )}
     </div>
   );
 }
