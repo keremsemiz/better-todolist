@@ -164,7 +164,7 @@ const App: React.FC = () => {
           )}
         </div>
         <div className="themeSwitcher" onClick={toggleDarkMode}>
-          {darkMode ? <UilSun /> : <UilMoon />}
+          {darkMode ? <UilHeart /> : <UilStar />}
         </div>
       </header>
       <div className="mainContent">
