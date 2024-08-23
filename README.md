@@ -25,4 +25,5 @@ export default {
 }
 ```
 
-- Before use, make sure to try out the deployed versions for testing purposes
+- Before use, make sure to try out the deployed versions for testing purposes:
+https://wondrous-pika-38aa90.netlify.app/
