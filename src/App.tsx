@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { UilSearch, UilStar, UilHeart, UilUser, UilMoon, UilSun } from '@iconscout/react-unicons';
+import { UilSearch, UilStar, UilHeart, UilUser } from '@iconscout/react-unicons';
 
 interface Todo {
   id: number;
